@@ -26,7 +26,10 @@ function App() {
         <header className="flex justify-between items-center mb-12">
           <h2 className="text-3xl font-bold">Dashboard</h2>
           <button
-            onClick={() => window.location.href = 'http://localhost:3001/api/auth/login'}
+            onClick={() => {
+              const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+              window.location.href = `${baseUrl}/api/auth/login`;
+            }}
             className="bg-primary text-black px-6 py-2 rounded-full font-bold hover:scale-105 active:scale-95 transition-transform"
           >
             Login with Spotify

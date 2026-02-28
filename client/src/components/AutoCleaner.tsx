@@ -24,7 +24,8 @@ export const AutoCleaner = () => {
         setLoading(true);
         setError('');
         try {
-            const { data } = await axios.post('http://localhost:3001/api/cleaner/analyze', {}, { withCredentials: true });
+            const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const { data } = await axios.post(`${baseUrl}/api/cleaner/analyze`, {}, { withCredentials: true });
             setClusters(data.clusters);
         } catch (err: any) {
             console.error(err);
