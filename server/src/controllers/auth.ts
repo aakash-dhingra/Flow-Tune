@@ -37,9 +37,11 @@ export const callback = async (req: Request, res: Response, next: NextFunction) 
         };
 
         const response = await axios.post(authOptions.url, authOptions.data, { headers: authOptions.headers });
+        console.log('Spotify Token Response:', response.data);
         const { access_token, refresh_token, expires_in } = response.data;
 
         // Fetch user profile from Spotify
+        console.log('Fetching Spotify Profile with token:', access_token.substring(0, 10) + '...');
         const profileResponse = await axios.get('https://api.spotify.com/v1/me', {
             headers: { 'Authorization': `Bearer ${access_token}` },
         });
