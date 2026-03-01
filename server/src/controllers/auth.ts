@@ -25,18 +25,18 @@ export const callback = async (req: Request, res: Response, next: NextFunction) 
 
         const authOptions = {
             url: 'https://accounts.spotify.com/api/token',
-            form: {
-                code: code,
+            data: new URLSearchParams({
+                code: typeof code === 'string' ? code : '',
                 redirect_uri: SPOTIFY_REDIRECT_URI,
                 grant_type: 'authorization_code',
-            },
+            }).toString(),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': `Basic ${Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
             },
         };
 
-        const response = await axios.post(authOptions.url, authOptions.form, { headers: authOptions.headers });
+        const response = await axios.post(authOptions.url, authOptions.data, { headers: authOptions.headers });
         const { access_token, refresh_token, expires_in } = response.data;
 
         // Fetch user profile from Spotify

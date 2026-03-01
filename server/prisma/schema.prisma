@@ -1,26 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id            String              @id @default(uuid())
-  spotifyId     String              @unique
-  accessToken   String
-  refreshToken  String
-  tokenExpiry   DateTime
-  createdAt     DateTime            @default(now())
-  playlists     GeneratedPlaylist[]
+  id           String              @id @default(uuid())
+  spotifyId    String              @unique
+  accessToken  String
+  refreshToken String
+  tokenExpiry  DateTime
+  createdAt    DateTime            @default(now())
+  playlists    GeneratedPlaylist[]
 }
 
 model GeneratedPlaylist {
   id        String   @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      String   // 'mood' | 'time' | 'cleaner'
+  type      String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

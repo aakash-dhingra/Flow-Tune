@@ -26,9 +26,15 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api', routes);
 
 // Error handling middleware
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
+  if (err.response) {
+    console.error('Axios Error Data:', err.response.data);
+  }
+  res.status(500).json({
+    error: err.message || 'Internal Server Error',
+    details: err.response?.data || undefined
+  });
 });
 
 app.listen(PORT, () => {
