@@ -12,7 +12,7 @@ const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 const SCOPES = 'user-library-read playlist-modify-public playlist-modify-private user-read-private user-read-email';
 
 export const login = (req: Request, res: Response) => {
-    const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${SPOTIFY_CLIENT_ID}&scope=${encodeURIComponent(SCOPES)}&redirect_uri=${encodeURIComponent(SPOTIFY_REDIRECT_URI)}`;
+    const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${SPOTIFY_CLIENT_ID}&scope=${encodeURIComponent(SCOPES)}&redirect_uri=${encodeURIComponent(SPOTIFY_REDIRECT_URI)}&show_dialog=true`;
     res.redirect(authUrl);
 };
 
