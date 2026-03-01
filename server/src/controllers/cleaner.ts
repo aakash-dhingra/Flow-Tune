@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { SpotifyService } from '../services/spotify';
-import { kmeans } from 'ml-kmeans';
+import skmeans from 'skmeans';
 
 export const analyzeLikedTracks = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -37,13 +37,13 @@ export const analyzeLikedTracks = async (req: Request, res: Response, next: Next
         const k = Math.min(4, dataPoints.length); // Max 4 clusters
         if (k < 1) return res.status(400).json({ error: 'Not enough data points' });
 
-        const result = kmeans(dataPoints, k, { initialization: 'kmeans++' });
+        const result = skmeans(dataPoints, k, 'kmpp');
 
         // Grouping logic (simplified labels based on centroids for MVP)
         const groups: { [key: number]: any[] } = {};
         for (let i = 0; i < k; i++) groups[i] = [];
 
-        result.clusters.forEach((clusterIndex: number, dataIndex: number) => {
+        result.idxs.forEach((clusterIndex: number, dataIndex: number) => {
             groups[clusterIndex].push(validData[dataIndex]);
         });
 

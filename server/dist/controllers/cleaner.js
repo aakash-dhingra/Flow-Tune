@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.analyzeLikedTracks = void 0;
 const spotify_1 = require("../services/spotify");
-const ml_kmeans_1 = require("ml-kmeans");
+const skmeans_1 = __importDefault(require("skmeans"));
 const analyzeLikedTracks = async (req, res, next) => {
     try {
         const userId = req.userId;
@@ -32,12 +35,12 @@ const analyzeLikedTracks = async (req, res, next) => {
         const k = Math.min(4, dataPoints.length); // Max 4 clusters
         if (k < 1)
             return res.status(400).json({ error: 'Not enough data points' });
-        const result = (0, ml_kmeans_1.kmeans)(dataPoints, k, { initialization: 'kmeans++' });
+        const result = (0, skmeans_1.default)(dataPoints, k, 'kmpp');
         // Grouping logic (simplified labels based on centroids for MVP)
         const groups = {};
         for (let i = 0; i < k; i++)
             groups[i] = [];
-        result.clusters.forEach((clusterIndex, dataIndex) => {
+        result.idxs.forEach((clusterIndex, dataIndex) => {
             groups[clusterIndex].push(validData[dataIndex]);
         });
         const labeledClusters = result.centroids.map((centroid, index) => {
