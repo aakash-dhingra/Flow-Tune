@@ -43,11 +43,11 @@ export const analyzeLikedTracks = async (req: Request, res: Response, next: Next
         const groups: { [key: number]: any[] } = {};
         for (let i = 0; i < k; i++) groups[i] = [];
 
-        result.clusters.forEach((clusterIndex, dataIndex) => {
+        result.clusters.forEach((clusterIndex: number, dataIndex: number) => {
             groups[clusterIndex].push(validData[dataIndex]);
         });
 
-        const labeledClusters = result.centroids.map((centroid, index) => {
+        const labeledClusters = result.centroids.map((centroid: number[], index: number) => {
             const [energy, valence] = centroid;
 
             let label = 'Mixed';
